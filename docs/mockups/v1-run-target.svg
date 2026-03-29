@@ -1,0 +1,45 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="900" fill="#10202B"/>
+  <rect width="1600" height="430" fill="url(#runSky)"/>
+  <rect y="430" width="1600" height="200" fill="#1B313C"/>
+  <rect y="630" width="1600" height="270" fill="#0F1C26"/>
+  <ellipse cx="1150" cy="164" rx="240" ry="140" fill="#D9A35F" fill-opacity="0.05"/>
+  <ellipse cx="1150" cy="164" rx="160" ry="96" fill="#F3E6CE" fill-opacity="0.04"/>
+  <rect x="140" y="740" width="1320" height="6" fill="#D9A35F" fill-opacity="0.5"/>
+  <rect x="140" y="754" width="1320" height="4" fill="#F3E6CE" fill-opacity="0.22"/>
+  <rect x="670" y="604" width="360" height="84" rx="8" fill="#6F4C3A"/>
+  <rect x="714" y="576" width="92" height="24" rx="4" fill="#8D654B"/>
+  <rect x="850" y="576" width="92" height="24" rx="4" fill="#8D654B"/>
+  <rect x="996" y="576" width="46" height="24" rx="4" fill="#8D654B"/>
+  <circle cx="920" cy="646" r="14" fill="#D9A35F"/>
+  <circle cx="920" cy="646" r="70" fill="#D9A35F" fill-opacity="0.12"/>
+  <rect x="500" y="548" width="18" height="120" fill="#2A3740"/>
+  <circle cx="509" cy="540" r="10" fill="#D9A35F"/>
+  <circle cx="509" cy="540" r="54" fill="#D9A35F" fill-opacity="0.16"/>
+  <rect x="1140" y="530" width="18" height="138" fill="#2A3740"/>
+  <circle cx="1149" cy="520" r="10" fill="#D9A35F"/>
+  <circle cx="1149" cy="520" r="54" fill="#D9A35F" fill-opacity="0.14"/>
+  <rect x="360" y="566" width="86" height="62" rx="8" fill="#2A3740"/>
+  <rect x="1224" y="560" width="96" height="68" rx="8" fill="#2A3740"/>
+  <ellipse cx="804" cy="694" rx="20" ry="14" fill="#F3E6CE"/>
+  <path d="M790 678L799 664L808 678" fill="#F3E6CE"/>
+  <ellipse cx="288" cy="704" rx="16" ry="12" fill="#8C939D"/>
+  <ellipse cx="1320" cy="692" rx="14" ry="34" fill="#A95A47"/>
+  <circle cx="1320" cy="650" r="10" fill="#F3E6CE" fill-opacity="0.8"/>
+  <rect x="96" y="88" width="386" height="240" rx="28" fill="#132530" fill-opacity="0.82" stroke="#F3E6CE" stroke-opacity="0.12"/>
+  <text x="128" y="142" fill="#F3E6CE" font-family="Cormorant Garamond" font-size="34" font-weight="600">Target: Run</text>
+  <text x="128" y="186" fill="#D7C7AE" font-family="Manrope" font-size="18">The lane stays readable, but the world gains depth, light,</text>
+  <text x="128" y="212" fill="#D7C7AE" font-family="Manrope" font-size="18">fog, silhouettes and cleaner hierarchy.</text>
+  <text x="128" y="262" fill="#F3E6CE" font-family="Cormorant Garamond" font-size="24" font-weight="600">Visual Notes</text>
+  <text x="128" y="294" fill="#D7C7AE" font-family="Manrope" font-size="18">• Build nodes act like scenic punctuation</text>
+  <text x="128" y="322" fill="#D7C7AE" font-family="Manrope" font-size="18">• The train remains the warm anchor at center</text>
+  <text x="128" y="350" fill="#D7C7AE" font-family="Manrope" font-size="18">• Enemy silhouettes are readable without UI labels</text>
+  <rect x="570" y="84" width="460" height="74" rx="28" fill="#132530" fill-opacity="0.78" stroke="#D9A35F" stroke-opacity="0.28"/>
+  <text x="662" y="130" fill="#F3E6CE" font-family="Cormorant Garamond" font-size="28" font-weight="600">compact event strip</text>
+  <defs>
+    <linearGradient id="runSky" x1="800" y1="0" x2="800" y2="430" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6C8B99"/>
+      <stop offset="1" stop-color="#264454"/>
+    </linearGradient>
+  </defs>
+</svg>

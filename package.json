@@ -1,0 +1,31 @@
+{
+  "name": "last-train-home",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:smoke": "node scripts/playtest-smoke.mjs",
+    "test:smoke:mobile": "node scripts/playtest-smoke.mjs --mobile"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.1.0",
+    "jsdom": "^29.0.1",
+    "playwright": "^1.58.2",
+    "prettier": "^3.8.1",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.57.2",
+    "vite": "^8.0.1",
+    "vitest": "^4.1.2"
+  },
+  "dependencies": {
+    "phaser": "^3.90.0"
+  }
+}

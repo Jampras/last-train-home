@@ -1,0 +1,43 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="900" fill="#10202B"/>
+  <rect width="1600" height="520" fill="url(#sky)"/>
+  <ellipse cx="1160" cy="170" rx="240" ry="150" fill="#D9A35F" fill-opacity="0.08"/>
+  <ellipse cx="1160" cy="170" rx="170" ry="110" fill="#F3E6CE" fill-opacity="0.08"/>
+  <rect y="520" width="1600" height="380" fill="#152A37"/>
+  <rect y="650" width="1600" height="250" fill="#0F1C26"/>
+  <rect x="420" y="608" width="490" height="110" rx="8" fill="#6F4C3A"/>
+  <rect x="454" y="578" width="118" height="28" rx="4" fill="#8D654B"/>
+  <rect x="624" y="578" width="118" height="28" rx="4" fill="#8D654B"/>
+  <rect x="788" y="578" width="86" height="28" rx="4" fill="#8D654B"/>
+  <rect x="675" y="608" width="84" height="82" fill="#2A3740"/>
+  <rect x="395" y="742" width="545" height="6" fill="#D9A35F" fill-opacity="0.6"/>
+  <rect x="395" y="756" width="545" height="4" fill="#F3E6CE" fill-opacity="0.25"/>
+  <rect x="1030" y="520" width="12" height="130" fill="#2A3740"/>
+  <circle cx="1036" cy="506" r="12" fill="#D9A35F"/>
+  <circle cx="1036" cy="506" r="68" fill="#D9A35F" fill-opacity="0.18"/>
+  <circle cx="1036" cy="506" r="120" fill="#D9A35F" fill-opacity="0.08"/>
+  <rect x="1160" y="612" width="76" height="46" rx="6" fill="#2A3740"/>
+  <rect x="1250" y="632" width="54" height="26" rx="6" fill="#2A3740"/>
+  <ellipse cx="624" cy="670" rx="18" ry="14" fill="#F3E6CE"/>
+  <ellipse cx="760" cy="668" rx="22" ry="16" fill="#D9A35F"/>
+  <path d="M610 653L618 640L626 653" fill="#F3E6CE"/>
+  <path d="M744 649L754 634L764 649" fill="#D9A35F"/>
+  <rect x="80" y="86" width="400" height="250" rx="28" fill="#132530" fill-opacity="0.84" stroke="#F3E6CE" stroke-opacity="0.12"/>
+  <text x="112" y="140" fill="#F3E6CE" font-family="Cormorant Garamond" font-size="30" font-weight="600">Target: Prologo</text>
+  <text x="112" y="184" fill="#D7C7AE" font-family="Manrope" font-size="18">Poster-like first screen. One warm anchor, one large sky,</text>
+  <text x="112" y="210" fill="#D7C7AE" font-family="Manrope" font-size="18">train centered low, danger arriving from the right.</text>
+  <text x="112" y="260" fill="#F3E6CE" font-family="Cormorant Garamond" font-size="24" font-weight="600">Visual Notes</text>
+  <text x="112" y="292" fill="#D7C7AE" font-family="Manrope" font-size="18">• Lamp glow is the emotional center</text>
+  <text x="112" y="320" fill="#D7C7AE" font-family="Manrope" font-size="18">• UI reduced to small poetic strips</text>
+  <text x="112" y="348" fill="#D7C7AE" font-family="Manrope" font-size="18">• Train has weight, windows and rhythm</text>
+  <text x="1042" y="455" fill="#F3E6CE" font-family="Manrope" font-size="16">first warm beacon</text>
+  <line x1="1080" y1="460" x2="1044" y2="494" stroke="#F3E6CE" stroke-opacity="0.4"/>
+  <text x="1310" y="632" fill="#F3E6CE" font-family="Manrope" font-size="16">barricade zone</text>
+  <line x1="1300" y1="636" x2="1244" y2="644" stroke="#F3E6CE" stroke-opacity="0.4"/>
+  <defs>
+    <linearGradient id="sky" x1="800" y1="0" x2="800" y2="520" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6C8B99"/>
+      <stop offset="1" stop-color="#355565"/>
+    </linearGradient>
+  </defs>
+</svg>
