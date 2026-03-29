@@ -201,3 +201,13 @@ Observacoes:
 - Texto quebrado no hub normalizado para ASCII-safe.
 - Documentacao nova:
   - `docs/21-v9-fx-and-lighting-pass.md`
+
+2026-03-29 - Publicacao
+
+- Repositorio GitHub criado e publicado:
+  - `https://github.com/Jampras/last-train-home`
+- Deploy de producao atualizado na Vercel:
+  - alias publico `https://gameweb-xi.vercel.app`
+  - deploy imutavel `https://gameweb-7h7segcjg-joao-pedros-projects-b785f288.vercel.app`
+- Verificacao final de disponibilidade:
+  - `Invoke-WebRequest https://gameweb-xi.vercel.app` retornou `200`

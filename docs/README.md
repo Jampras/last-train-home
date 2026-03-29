@@ -39,6 +39,7 @@ Current implementation status:
 - 4 rotas ativas na campanha
 - smoke test desktop e mobile automatizado
 - release candidate publicado em [https://gameweb-xi.vercel.app](https://gameweb-xi.vercel.app)
+- codigo publicado em [https://github.com/Jampras/last-train-home](https://github.com/Jampras/last-train-home)
 
 Reading order:
 

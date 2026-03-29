@@ -11,6 +11,7 @@ Jogo web 2D em `Phaser + TypeScript + Vite` com foco em:
 Build atual:
 
 - release candidate publicado em [https://gameweb-xi.vercel.app](https://gameweb-xi.vercel.app)
+- codigo publicado em [https://github.com/Jampras/last-train-home](https://github.com/Jampras/last-train-home)
 
 ## Comandos
 
