@@ -73,6 +73,7 @@ Reading order:
 27. `27-p14-run-readability-and-feedback.md`
 28. `28-responsive-landscape-shell-pass.md`
 29. `29-shell-ux-polish-and-publish.md`
+30. `30-mobile-portrait-shell-redesign.md`
 
 Daily commands:
 

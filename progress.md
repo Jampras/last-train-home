@@ -317,6 +317,19 @@ Observacoes:
 - O dock touch ficou mais legivel com grupos visuais separados.
 - Documentacao nova:
   - `docs/29-shell-ux-polish-and-publish.md`
+
+2026-03-29 - Mobile Portrait Shell Redesign
+
+- O retrato mobile foi redesenhado.
+- A solucao anterior girava o shell inteiro e deixava HUD e leitura impraticaveis.
+- Agora o mobile em retrato usa:
+  - palco horizontal em `16:9`
+  - HUD normal, sem texto girado
+  - prompt simplificado
+  - dock touch agrupado e compacto
+- Desktop foi preservado.
+- Documentacao nova:
+  - `docs/30-mobile-portrait-shell-redesign.md`
 - A HUD agora preserva mais da cena atras dela e pede menos leitura longa do jogador.
 - Revisao final feita com screenshots reais de desktop e mobile:
   - `smoke-desktop-04-run-ready.png`

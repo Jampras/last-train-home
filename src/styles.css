@@ -170,11 +170,10 @@ h3,
 
 @media (orientation: portrait) {
   .landscape-frame {
-    width: 100svh;
-    height: 100vw;
-    padding: 10px;
-    transform: translate(-50%, -50%) rotate(90deg);
-    transform-origin: center;
+    width: calc(100vw - 16px);
+    height: calc(100svh - 16px);
+    padding: 8px;
+    transform: translate(-50%, -50%);
   }
 }
 
@@ -1049,6 +1048,150 @@ body.reduced-motion .hud-prompt-panel {
 
   .touch-overlay {
     gap: 6px;
+  }
+}
+
+@media (orientation: portrait) and (max-width: 700px) {
+  .landscape-frame {
+    gap: 8px;
+  }
+
+  .hud-top {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .hud-chip {
+    padding: 8px 10px;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    line-height: 1.28;
+  }
+
+  .hud-event {
+    width: 100%;
+    padding: 8px 10px;
+  }
+
+  .hud-event__body,
+  .hud-prompt-tags,
+  .hud-prompt-panel__eyebrow {
+    display: none;
+  }
+
+  .playfield-shell {
+    flex: 0 0 auto;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    max-height: min(42svh, calc((100vw - 24px) * 9 / 16));
+    border-radius: 22px;
+  }
+
+  .hud-bottom {
+    flex: 1 1 auto;
+    min-height: 0;
+    gap: 8px;
+  }
+
+  .hud-bottom__content {
+    gap: 8px;
+    min-height: 0;
+  }
+
+  .app-shell[data-scene='hub'] .hud-panel {
+    max-height: min(24svh, 220px);
+  }
+
+  .hud-panel,
+  .hud-prompt-panel {
+    padding: 12px;
+    border-radius: 20px;
+  }
+
+  .hud-title {
+    font-size: 21px;
+  }
+
+  .hud-subtitle,
+  .hud-panel__lead,
+  .hud-prompt,
+  .hud-prompt-panel__body {
+    font-size: 11px;
+    line-height: 1.35;
+  }
+
+  .hud-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .hud-stat {
+    padding: 9px 10px;
+    border-radius: 14px;
+  }
+
+  .hud-stat__label {
+    font-size: 9px;
+    letter-spacing: 0.08em;
+  }
+
+  .hud-stat__value {
+    font-size: 12px;
+    line-height: 1.3;
+  }
+
+  .hud-footer {
+    overflow-x: auto;
+    padding-bottom: 2px;
+    scrollbar-width: none;
+  }
+
+  .hud-footer::-webkit-scrollbar {
+    display: none;
+  }
+
+  .hud-actions {
+    width: max-content;
+    min-width: 100%;
+    flex-wrap: nowrap;
+    gap: 6px;
+    padding: 7px;
+    border-radius: 16px;
+  }
+
+  .hud-button {
+    min-height: 40px;
+    padding: 7px 10px;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+
+  .touch-overlay {
+    justify-content: stretch;
+    gap: 6px;
+  }
+
+  .touch-overlay__left,
+  .touch-overlay__right {
+    width: 100%;
+    justify-content: space-between;
+    gap: 6px;
+    padding: 6px;
+    border-radius: 16px;
+  }
+
+  .touch-overlay__right {
+    flex-direction: row;
+  }
+
+  .touch-button {
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 44px;
+    padding: 8px 10px;
+    font-size: 9px;
+    letter-spacing: 0.08em;
   }
 }
 
