@@ -13,6 +13,26 @@ Ship a complete playable web game on Vercel with:
 - end-of-run summaries
 - polished presentation
 
+## Current Status
+
+As of the latest documented pass:
+
+- core visual foundation through `V12` is complete
+- prologue, hub, run loop, persistence, and ending v1 are already working
+- GitHub and Vercel publication are live
+
+The next roadmap focus is:
+
+- onboarding clarity
+- run readability
+- content depth
+- progression tuning
+- performance and release prep
+
+See:
+
+- `25-post-v12-execution-roadmap.md`
+
 ## Production Phases
 
 ### Phase 0 - Pre-Production Lock
@@ -176,3 +196,16 @@ Mitigation:
 - balance around `Jornada`, not hard mode
 - bias early event pools toward positive outcomes
 - preserve partial rewards on failed runs
+
+## Next Sprint Track
+
+Recommended next execution order after visual consolidation:
+
+1. `P13` Onboarding and First 20 Minutes
+2. `P14` Run Readability and Feedback
+3. `P15` Event Pool and Memorable Stations
+4. `P16` Leaders, Wagons, and Mastery Depth
+5. `P17` Audio Identity and Reactive Sound
+6. `P18` Progression, Economy, and Difficulty Tuning
+7. `P19` Performance, Payload, and Device Comfort
+8. `P20` Demo Packaging and Release Prep

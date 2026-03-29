@@ -105,7 +105,8 @@ export class StationRunScene extends Phaser.Scene {
   private renderRun(run: RunState): void {
     const horizonY = this.scale.height - 170
     const groundY = this.scale.height - 114
-    const reducedMotion = this.store.getState().userSettings.reducedMotion
+    const state = this.store.getState()
+    const reducedMotion = state.userSettings.reducedMotion
     const phaseColor = this.resolvePhaseColor(run.clock.phase, run.routeId)
     const pulse = reducedMotion ? 0 : Math.sin(this.time.now * 0.0036) * 0.04
 
@@ -139,9 +140,12 @@ export class StationRunScene extends Phaser.Scene {
       this.drawEnemy(enemy, groundY)
     }
 
-    this.drawTrainIntegrity(run, groundY)
+    this.drawTrainIntegrity(run, groundY, reducedMotion)
+    this.drawDepartureCue(run, groundY, reducedMotion)
+    this.drawFocusCue(run, groundY, reducedMotion)
     this.drawAtmosphere(run, groundY, reducedMotion)
     this.drawSceneLighting(run, groundY, reducedMotion)
+    this.drawThreatCue(run, groundY, reducedMotion)
 
     this.player.setPosition(run.playerX, groundY - 18)
     drawCatSilhouette(this.worldGraphics, {
@@ -570,13 +574,19 @@ export class StationRunScene extends Phaser.Scene {
     })
   }
 
-  private drawTrainIntegrity(run: RunState, groundY: number): void {
+  private drawTrainIntegrity(run: RunState, groundY: number, reducedMotion: boolean): void {
     const g = this.worldGraphics
     const width = 196
     const x = run.trainX - width / 2
     const y = groundY - 132
     const ratio = Math.max(0, run.trainIntegrity / run.maxTrainIntegrity)
     const barColor = ratio > 0.5 ? 0x95c4a5 : ratio > 0.25 ? 0xf2c078 : 0xdd7b6a
+    const pulse = reducedMotion ? 0 : Math.sin(this.time.now * 0.0072) * 0.06
+
+    if (ratio <= 0.35) {
+      g.fillStyle(0xdd7b6a, 0.12 + pulse)
+      g.fillRoundedRect(x - 8, y - 6, width + 16, 40, 14)
+    }
 
     g.fillStyle(0x0b1319, 0.78)
     g.fillRoundedRect(x, y, width, 28, 10)
@@ -586,6 +596,11 @@ export class StationRunScene extends Phaser.Scene {
     g.fillRoundedRect(x + 6, y + 5, (width - 12) * ratio, 8, 6)
     g.fillStyle(0xf3e6ce, 0.8)
     g.fillRect(x + width / 2 - 30, y + 16, 60, 3)
+    g.fillStyle(0xf3e6ce, 0.18)
+    for (let index = 1; index < run.maxTrainIntegrity; index += 1) {
+      const markerX = x + 6 + ((width - 12) / run.maxTrainIntegrity) * index
+      g.fillRect(markerX, y + 4, 2, 10)
+    }
   }
 
   private drawBiomeBackdrop(run: RunState, horizonY: number, groundY: number): void {
@@ -659,6 +674,142 @@ export class StationRunScene extends Phaser.Scene {
       g.fillStyle(0x0a1218, 0.14)
       g.fillRect(0, groundY - 150, width, 150)
     }
+  }
+
+  private drawDepartureCue(run: RunState, groundY: number, reducedMotion: boolean): void {
+    if (!run.canDepart) {
+      return
+    }
+
+    const pulse = reducedMotion ? 0 : Math.sin(this.time.now * 0.0062) * 0.07
+    const alpha = 0.14 + pulse
+    const g = this.fxGraphics
+
+    g.fillStyle(0xf2c078, alpha)
+    g.fillEllipse(run.trainX, groundY - 48, 260, 86)
+    g.fillStyle(0xf8ddb0, 0.12 + pulse * 0.5)
+    g.fillTriangle(run.trainX - 18, groundY - 148, run.trainX + 18, groundY - 148, run.trainX, groundY - 118)
+  }
+
+  private drawFocusCue(run: RunState, groundY: number, reducedMotion: boolean): void {
+    const focusTarget = this.resolveFocusTarget(run)
+
+    if (!focusTarget) {
+      return
+    }
+
+    const pulse = reducedMotion ? 0 : Math.sin(this.time.now * 0.008 + focusTarget.x * 0.002) * 0.08
+    const g = this.fxGraphics
+    const palette =
+      focusTarget.tone === 'ready'
+        ? { color: 0xf2c078, alpha: 0.24 }
+        : focusTarget.tone === 'merchant'
+          ? { color: 0xe7c18d, alpha: 0.2 }
+          : focusTarget.tone === 'crew'
+            ? { color: 0x95c4a5, alpha: 0.2 }
+            : { color: 0xc7d5dc, alpha: 0.18 }
+
+    g.lineStyle(3, palette.color, 0.28 + pulse)
+    g.strokeEllipse(focusTarget.x, groundY - 12, focusTarget.radius * 2, 18 + focusTarget.radius * 0.18)
+    g.fillStyle(palette.color, palette.alpha + pulse * 0.4)
+    g.fillEllipse(focusTarget.x, groundY - 10, focusTarget.radius * 1.52, 16)
+    g.fillStyle(palette.color, palette.alpha + 0.06 + pulse * 0.3)
+    g.fillTriangle(
+      focusTarget.x - 12,
+      focusTarget.y - focusTarget.height - 20,
+      focusTarget.x + 12,
+      focusTarget.y - focusTarget.height - 20,
+      focusTarget.x,
+      focusTarget.y - focusTarget.height + 2,
+    )
+  }
+
+  private drawThreatCue(run: RunState, groundY: number, reducedMotion: boolean): void {
+    const ratio = run.trainIntegrity / run.maxTrainIntegrity
+    const enemyCount = run.enemies.length
+
+    if (enemyCount === 0 && ratio > 0.4) {
+      return
+    }
+
+    const hostilePulse = reducedMotion ? 0 : Math.sin(this.time.now * 0.01) * 0.06
+    const dangerAlpha = Math.min(0.22, enemyCount * 0.018 + (ratio <= 0.4 ? 0.08 : 0.02))
+    const g = this.fxGraphics
+
+    g.fillStyle(0x9f4d45, dangerAlpha + hostilePulse * 0.4)
+    g.fillRect(0, 0, 26, this.scale.height)
+    g.fillRect(run.worldWidth - 26, 0, 26, this.scale.height)
+
+    if (ratio <= 0.4) {
+      g.fillStyle(0xdd7b6a, 0.08 + hostilePulse)
+      g.fillEllipse(run.trainX, groundY - 42, 460, 118)
+    }
+
+    const westThreat = run.enemies.some((enemy) => enemy.lane === 'west')
+    const eastThreat = run.enemies.some((enemy) => enemy.lane === 'east')
+    g.fillStyle(0xdd7b6a, 0.26 + hostilePulse * 0.5)
+
+    if (westThreat) {
+      g.fillTriangle(20, groundY - 70, 20, groundY - 20, 56, groundY - 45)
+    }
+
+    if (eastThreat) {
+      g.fillTriangle(run.worldWidth - 20, groundY - 70, run.worldWidth - 20, groundY - 20, run.worldWidth - 56, groundY - 45)
+    }
+  }
+
+  private resolveFocusTarget(run: RunState): FocusTarget | null {
+    const candidates: FocusTarget[] = []
+    const interactionRange = 170
+
+    if (run.merchant?.active && Math.abs(run.playerX - run.merchant.x) <= interactionRange) {
+      candidates.push({
+        x: run.merchant.x,
+        y: this.scale.height - 122,
+        radius: 68,
+        height: 72,
+        tone: 'merchant',
+      })
+    }
+
+    for (const node of run.resourceNodes) {
+      if (!node.collected && Math.abs(run.playerX - node.x) <= interactionRange) {
+        candidates.push({ x: node.x, y: this.scale.height - 122, radius: 52, height: 36, tone: 'guide' })
+      }
+    }
+
+    for (const node of run.recruitNodes) {
+      if (!node.recruited && Math.abs(run.playerX - node.x) <= interactionRange) {
+        candidates.push({ x: node.x, y: this.scale.height - 122, radius: 54, height: 44, tone: 'guide' })
+      }
+    }
+
+    for (const node of run.buildNodes) {
+      if (Math.abs(run.playerX - node.x) <= interactionRange) {
+        candidates.push({ x: node.x, y: this.scale.height - 122, radius: 60, height: 56, tone: 'guide' })
+      }
+    }
+
+    if (run.recruitedCats.length > 0 && Math.abs(run.playerX - run.trainX) <= 144) {
+      candidates.push({ x: run.trainX - 54, y: this.scale.height - 122, radius: 64, height: 88, tone: 'crew' })
+    }
+
+    if (run.canDepart) {
+      candidates.push({
+        x: run.trainX,
+        y: this.scale.height - 122,
+        radius: Math.abs(run.playerX - run.trainX) <= 180 ? 92 : 78,
+        height: 96,
+        tone: 'ready',
+      })
+    }
+
+    if (candidates.length === 0) {
+      return null
+    }
+
+    candidates.sort((left, right) => Math.abs(run.playerX - left.x) - Math.abs(run.playerX - right.x))
+    return candidates[0]
   }
 
   private drawFreightYardBackdrop(horizonY: number): void {
@@ -742,4 +893,12 @@ export class StationRunScene extends Phaser.Scene {
 
     return palette.night
   }
+}
+
+type FocusTarget = {
+  x: number
+  y: number
+  radius: number
+  height: number
+  tone: 'guide' | 'merchant' | 'crew' | 'ready'
 }

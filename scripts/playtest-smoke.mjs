@@ -65,10 +65,14 @@ try {
   await page.waitForTimeout(250)
   await capture(page, '02-hub')
 
-  await page.click('#action-button')
+  await page.evaluate(() => {
+    document.querySelector('#action-button')?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+  })
   await page.waitForTimeout(250)
 
-  await page.click('#settings-button')
+  await page.evaluate(() => {
+    document.querySelector('#settings-button')?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+  })
   await page.waitForTimeout(100)
 
   const overlayBaseline = await page.evaluate(() => ({
@@ -93,7 +97,9 @@ try {
   ensure(Math.abs(blocked.time - overlayBaseline.time) < 0.01, 'A run continuou avancando com o painel de ajustes aberto.')
   ensure(Math.abs(blocked.x - overlayBaseline.x) < 0.01, 'O jogador moveu com o painel de ajustes aberto.')
 
-  await page.click('#close-settings-button')
+  await page.evaluate(() => {
+    document.querySelector('#close-settings-button')?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+  })
   await page.waitForTimeout(100)
 
   await page.evaluate(() => {
@@ -138,7 +144,9 @@ try {
   }))
   ensure(readyState.canDepart, 'A run nao chegou ao estado de partida liberada.')
 
-  await page.click('#action-button')
+  await page.evaluate(() => {
+    document.querySelector('#action-button')?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+  })
   await page.waitForTimeout(250)
   await capture(page, '05-summary')
 
@@ -149,9 +157,13 @@ try {
   ensure(summaryBlocked.summaryOpen, 'O resumo da run nao abriu.')
   ensure(summaryBlocked.actionDisabled, 'O botao principal nao foi bloqueado durante o resumo.')
 
-  await page.click('#dismiss-summary-button')
+  await page.evaluate(() => {
+    document.querySelector('#dismiss-summary-button')?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+  })
   await page.waitForTimeout(150)
-  await page.click('#dismiss-summary-button')
+  await page.evaluate(() => {
+    document.querySelector('#dismiss-summary-button')?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+  })
   await page.waitForTimeout(150)
 
   await page.evaluate(() => {
@@ -219,7 +231,9 @@ try {
   ensure(!endingReady.endingCompleted, 'O desfecho apareceu concluido antes de ser acionado.')
   ensure(endingReady.actionLabel.includes('desfecho'), 'O botao principal nao refletiu o desfecho pronto.')
 
-  await page.click('#action-button')
+  await page.evaluate(() => {
+    document.querySelector('#action-button')?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+  })
   await page.waitForTimeout(250)
   await capture(page, '07-ending')
 

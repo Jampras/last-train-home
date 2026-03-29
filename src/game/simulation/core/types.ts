@@ -237,6 +237,7 @@ export interface GameState {
   endingCompleted: boolean
   userSettings: UserSettings
   settingsPanelOpen: boolean
+  helpPanelOpen: boolean
   lastRunSummary: RunSummary | null
   progress: ProgressState
   run: RunState | null

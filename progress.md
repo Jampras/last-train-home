@@ -211,3 +211,153 @@ Observacoes:
   - deploy imutavel `https://gameweb-7h7segcjg-joao-pedros-projects-b785f288.vercel.app`
 - Verificacao final de disponibilidade:
   - `Invoke-WebRequest https://gameweb-xi.vercel.app` retornou `200`
+
+2026-03-29 - V10 Typography and UI Material Pass
+
+- V10 executado.
+- Hierarquia tipografica da HUD refinada:
+  - serif so para titulos principais
+  - sans editorial em chips, botoes e labels utilitarios
+- Materialidade da UI refeita:
+  - chips com leitura de metal fumado
+  - dock de acoes mais coeso
+  - overlays com cara de vidro quente e papel escuro
+  - painel do hub com estrutura editorial melhor
+- Overlays de memoria e resumo agora usam eyebrow + titulo grande.
+- Painel de configuracoes alinhado ao mesmo sistema visual.
+- Documentacao nova:
+  - `docs/22-v10-typography-and-ui-material-pass.md`
+
+2026-03-29 - V11 Mobile Visual Fit Pass
+
+- V11 executado.
+- HUD mobile comprimida e mais limpa:
+  - chips superiores com melhor quebra e ritmo
+  - action dock horizontal no rodape em vez de bloco alto
+  - touch overlay menor e menos dominante
+- Painel do hub no mobile agora ocupa menos a tela:
+  - altura limitada com scroll interno
+  - grade em 2 colunas em larguras medias
+  - fallback de 1 coluna so no breakpoint estreito
+- Cena do hub no mobile deixou de pintar texto redundante por cima da composicao:
+  - labels do mapa de rotas escondidos no viewport estreito
+  - title/subtitle/hint do canvas desligados no mobile
+- Revisao visual feita com screenshot mobile real do smoke.
+- Documentacao nova:
+  - `docs/23-v11-mobile-visual-fit-pass.md`
+
+2026-03-29 - V12 Final Art Review and Consolidation
+
+- V12 executado.
+- Prompt central simplificado para ficar mais facil de entender:
+  - titulos mais curtos
+  - suporte mais direto
+  - dica de controle embutida no proprio prompt
+- Botoes de acao encurtados para melhorar leitura em qualquer largura.
+- Breakpoints finais adicionados para telas:
+  - largas
+  - estreitas
+  - baixas
+
+2026-03-29 - P13 Onboarding and First 20 Minutes
+
+- P13 executado.
+- O onboarding ficou mais acessivel sem voltar a poluir a tela:
+  - overlay de ajuda no hub, prologo e run
+  - ajuda contextual por cena
+  - prompts mais curtos
+  - tags de acao no prompt para ensinar verbo por verbo
+- Gameplay e input agora param corretamente com a ajuda aberta.
+- Documentacao nova:
+  - `docs/26-p13-onboarding-and-first-20-minutes.md`
+
+2026-03-29 - P14 Run Readability and Feedback
+
+- P14 executado.
+- A run recebeu feedback visual mais forte:
+  - cue de partida quando o trem pode sair
+  - cue de foco para alvo proximo
+  - marcacao lateral de ameaca
+  - enfase de perigo com integridade baixa
+  - barra do trem segmentada e mais legivel
+- A HUD agora responde ao estado da run:
+  - calma
+  - mercador ativo
+  - perigo
+  - partida pronta
+- O smoke foi endurecido para overlays em fluxo SPA desktop/mobile.
+- Documentacao nova:
+  - `docs/27-p14-run-readability-and-feedback.md`
+
+2026-03-29 - Responsive Landscape Shell Pass
+
+- Shell frontend refeito para separar HUD da area jogavel.
+- O jogo agora roda dentro de um frame horizontal dedicado:
+  - desktop em landscape nativo
+  - mobile em retrato com frame rotacionado para horizontal
+- HUD normal saiu de cima do canvas:
+  - trilho superior para status e evento
+  - trilho inferior para prompt, painel do hub, acoes e touch
+- Phaser passou para `Canvas` para evitar erro de framebuffer no mobile com resize/orientacao.
+- Resize do jogo agora segue o container real via `ResizeObserver`.
+- Documentacao nova:
+  - `docs/28-responsive-landscape-shell-pass.md`
+
+2026-03-29 - Shell UX Polish and Publish
+
+- Pass final de UX executado em cima do shell horizontal.
+- O hub ficou mais enxuto:
+  - menos texto corrido
+  - resumo de comando mais claro
+  - ultima nota compactada
+- A doca de acoes ganhou hierarquia mais clara:
+  - acao primaria reforcada
+  - poder destacado
+  - labels mais curtos
+- O dock touch ficou mais legivel com grupos visuais separados.
+- Documentacao nova:
+  - `docs/29-shell-ux-polish-and-publish.md`
+- A HUD agora preserva mais da cena atras dela e pede menos leitura longa do jogador.
+- Revisao final feita com screenshots reais de desktop e mobile:
+  - `smoke-desktop-04-run-ready.png`
+  - `smoke-mobile-02-hub.png`
+  - `smoke-mobile-04-run-ready.png`
+- Documentacao nova:
+  - `docs/24-v12-final-art-review-and-consolidation.md`
+
+2026-03-29 - Roadmap pos V12
+
+- Documentacao atualizada para refletir que a trilha visual base foi concluida.
+- Novo roadmap criado para a proxima fase do projeto:
+  - `docs/25-post-v12-execution-roadmap.md`
+- Proximos sprints definidos:
+  - `P13` onboarding e primeiros 20 minutos
+  - `P14` legibilidade e feedback da run
+  - `P15` pool de eventos e estacoes memoraveis
+  - `P16` lideres, vagoes e maestria
+  - `P17` identidade de audio e som reativo
+  - `P18` tuning de progressao, economia e dificuldade
+  - `P19` performance, payload e conforto por dispositivo
+  - `P20` empacotamento de demo e preparo de release
+- `docs/07-production-roadmap.md`, `docs/12-visual-roadmap.md` e `docs/README.md` tambem foram atualizados para apontar para a nova fase.
+
+2026-03-29 - P13 Onboarding and First 20 Minutes
+
+- P13 executado.
+- Ajuda de controles e loop adicionada ao HUD:
+  - overlay dedicado
+  - abre no hub, no prologo e na run
+  - texto muda por cena
+  - gameplay fica bloqueado enquanto a ajuda estiver aberta
+- Prompt central agora ensina com menos texto corrido e mais tags de acao.
+- Frases do onboarding na store foram simplificadas para:
+  - coleta
+  - resgate
+  - construcao
+  - partida
+- Validacao extra em navegador confirmou:
+  - ajuda abrindo no hub e na run
+  - conteudo correto por contexto
+  - bloqueio de movimento e relogio enquanto a ajuda esta aberta
+- Documentacao nova:
+  - `docs/26-p13-onboarding-and-first-20-minutes.md`

@@ -11,11 +11,14 @@ export function createGameConfig(
   store: GameStore,
   inputController: InputController,
 ): Phaser.Types.Core.GameConfig {
+  const width = Math.max(parent.clientWidth, 960)
+  const height = Math.max(parent.clientHeight, 540)
+
   return {
-    type: Phaser.AUTO,
+    type: Phaser.CANVAS,
     parent,
-    width: window.innerWidth,
-    height: window.innerHeight,
+    width,
+    height,
     backgroundColor: '#132029',
     scale: {
       mode: Phaser.Scale.RESIZE,

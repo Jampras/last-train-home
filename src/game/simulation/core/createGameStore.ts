@@ -330,6 +330,7 @@ function createInitialState(): GameState {
     endingCompleted: persisted?.endingCompleted ?? false,
     userSettings,
     settingsPanelOpen: false,
+    helpPanelOpen: false,
     lastRunSummary: persisted?.lastRunSummary ?? null,
     progress: persisted?.progress ?? emptyProgress(),
     run: null,
@@ -369,7 +370,12 @@ export class GameStore {
   }
 
   hasBlockingOverlay(): boolean {
-    return this.state.settingsPanelOpen || this.state.currentMemory !== null || this.state.lastRunSummary !== null
+    return (
+      this.state.settingsPanelOpen ||
+      this.state.helpPanelOpen ||
+      this.state.currentMemory !== null ||
+      this.state.lastRunSummary !== null
+    )
   }
 
   selectNextLeader(): void {
@@ -618,7 +624,18 @@ export class GameStore {
   }
 
   toggleSettingsPanel(): void {
+    if (!this.state.settingsPanelOpen) {
+      this.state.helpPanelOpen = false
+    }
     this.state.settingsPanelOpen = !this.state.settingsPanelOpen
+    this.emit(false)
+  }
+
+  toggleHelpPanel(): void {
+    if (!this.state.helpPanelOpen) {
+      this.state.settingsPanelOpen = false
+    }
+    this.state.helpPanelOpen = !this.state.helpPanelOpen
     this.emit(false)
   }
 
@@ -1279,21 +1296,21 @@ export class GameStore {
     }
 
     if (run.canDepart && Math.abs(run.playerX - run.trainX) <= 140) {
-      this.state.contextPrompt = 'O amanhecer abriu a rota. Interaja no trem para partir com sucesso.'
+      this.state.contextPrompt = 'O trem pode partir. Volte ao centro e interaja.'
       return
     }
 
     const nearbyResourceNode = this.getNearbyResourceNode()
 
     if (nearbyResourceNode) {
-      this.state.contextPrompt = `${nearbyResourceNode.label}: interaja para coletar ${nearbyResourceNode.amount} de ${this.formatResourceName(nearbyResourceNode.kind)}.`
+      this.state.contextPrompt = `${nearbyResourceNode.label}: chegue perto e interaja para coletar ${nearbyResourceNode.amount} de ${this.formatResourceName(nearbyResourceNode.kind)}.`
       return
     }
 
     const nearbyRecruitNode = this.getNearbyRecruitNode()
 
     if (nearbyRecruitNode) {
-      this.state.contextPrompt = `${nearbyRecruitNode.catName} esta escondido. Interaja para colocar esse gato no trem.`
+      this.state.contextPrompt = `${nearbyRecruitNode.catName} esta escondido. Chegue perto e interaja para resgatar esse gato.`
       return
     }
 
@@ -1315,7 +1332,7 @@ export class GameStore {
     this.state.contextPrompt =
       nearbyNode.tier >= nearbyNode.maxTier
         ? `${nearbyNode.label} esta completo. Continue explorando ou segure a linha.`
-        : `${nearbyNode.label}: pressione Espaco ou Interagir para gastar ${buildCost} sucata.`
+        : `${nearbyNode.label}: chegue perto e interaja para gastar ${buildCost} sucata.`
   }
 
   private finishRun(status: RunState['status'], summary: string): void {

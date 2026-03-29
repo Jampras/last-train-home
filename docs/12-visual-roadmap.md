@@ -15,6 +15,18 @@ Reach a visual standard defined by:
 This roadmap is not about copying any reference literally.
 It is about reaching a similar level of finish, softness, readability, and emotional tone.
 
+## Status
+
+Visual foundation track complete:
+
+- `V1` through `V12` executed
+- the project now has a stable visual baseline for prologue, hub, run, UI, and mobile fit
+
+This document now serves as the completed record of the visual phase.
+For the next execution phase, use:
+
+- `25-post-v12-execution-roadmap.md`
+
 ## Visual Quality Gap Today
 
 Current weaknesses:

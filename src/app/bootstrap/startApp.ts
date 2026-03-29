@@ -23,6 +23,23 @@ export function startApp(mountNode: HTMLDivElement | null): void {
   let overlayBlocked = store.hasBlockingOverlay()
 
   const game = new Phaser.Game(createGameConfig(shell.gameRoot, store, inputController))
+  const syncGameFrame = () => {
+    const width = shell.gameRoot.clientWidth
+    const height = shell.gameRoot.clientHeight
+
+    if (width > 0 && height > 0) {
+      game.scale.resize(width, height)
+    }
+  }
+  const resizeObserver = new ResizeObserver(() => {
+    syncGameFrame()
+  })
+
+  resizeObserver.observe(shell.gameRoot)
+  window.addEventListener('resize', syncGameFrame)
+  requestAnimationFrame(() => {
+    syncGameFrame()
+  })
   let activeScene =
     store.getState().currentScene === 'prologue'
       ? PROLOGUE_SCENE_KEY
@@ -80,4 +97,13 @@ export function startApp(mountNode: HTMLDivElement | null): void {
       eventAudio,
     }
   }
+
+  window.addEventListener(
+    'beforeunload',
+    () => {
+      resizeObserver.disconnect()
+      window.removeEventListener('resize', syncGameFrame)
+    },
+    { once: true },
+  )
 }

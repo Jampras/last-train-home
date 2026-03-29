@@ -70,6 +70,7 @@ export class TrainHubScene extends Phaser.Scene {
     this.drawTrain(state.builtWagonIds.length, state.upgradedWagonIds.length, leader.accent)
     this.drawRouteMap(state.activeRouteId)
     this.drawLeaderPresence(leader.accent)
+    const compactHubCopy = this.scale.width <= 640
 
     this.titleText.setText('Trem-Santuario')
     this.subtitleText.setText(
@@ -80,6 +81,11 @@ export class TrainHubScene extends Phaser.Scene {
         ? 'O vagao lacrado ja pode ser encarado. O botao principal abre o desfecho da versao 1.'
         : 'Monte vagoes, troque a rota e parta quando a linha estiver pronta. O HUD agora carrega os detalhes; o trem carrega o clima.',
     )
+    this.titleText.setVisible(!compactHubCopy)
+    this.subtitleText.setVisible(!compactHubCopy)
+    this.hintText.setVisible(!compactHubCopy)
+
+    const compactRouteMap = this.scale.width <= 560
 
     state.routeNodes.forEach((route, index) => {
       const label = this.routeLabels[index]
@@ -89,7 +95,7 @@ export class TrainHubScene extends Phaser.Scene {
       }
 
       label.setText(route.name)
-      label.setVisible(true)
+      label.setVisible(!compactRouteMap)
       label.setColor(
         route.id === state.activeRouteId
           ? '#f4d9a3'

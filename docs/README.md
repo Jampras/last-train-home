@@ -37,6 +37,7 @@ Current implementation status:
 - prologue jogavel completo
 - hub persistente com rotas, vagoes e desfecho v1
 - 4 rotas ativas na campanha
+- base visual consolidada ate `V12`
 - smoke test desktop e mobile automatizado
 - release candidate publicado em [https://gameweb-xi.vercel.app](https://gameweb-xi.vercel.app)
 - codigo publicado em [https://github.com/Jampras/last-train-home](https://github.com/Jampras/last-train-home)
@@ -64,6 +65,14 @@ Reading order:
 19. `19-v7-first-run-environment-pass.md`
 20. `20-v8-biome-identity-pass.md`
 21. `21-v9-fx-and-lighting-pass.md`
+22. `22-v10-typography-and-ui-material-pass.md`
+23. `23-v11-mobile-visual-fit-pass.md`
+24. `24-v12-final-art-review-and-consolidation.md`
+25. `25-post-v12-execution-roadmap.md`
+26. `26-p13-onboarding-and-first-20-minutes.md`
+27. `27-p14-run-readability-and-feedback.md`
+28. `28-responsive-landscape-shell-pass.md`
+29. `29-shell-ux-polish-and-publish.md`
 
 Daily commands:
 
