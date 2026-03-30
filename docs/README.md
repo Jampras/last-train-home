@@ -34,6 +34,7 @@ Recommended implementation stack:
 
 Current implementation status:
 
+- official consolidated status: `00-current-status.md`
 - prologue jogavel completo
 - hub persistente com rotas, vagoes e desfecho v1
 - 4 rotas ativas na campanha
@@ -44,36 +45,37 @@ Current implementation status:
 
 Reading order:
 
-1. `01-game-vision.md`
-2. `02-narrative-and-world.md`
-3. `10-art-and-audio-bible.md`
-4. `03-core-loop-and-systems.md`
-5. `04-meta-progression-and-content.md`
-6. `05-web-ux-and-input.md`
-7. `06-technical-architecture.md`
-8. `07-production-roadmap.md`
-9. `08-sprint-plan.md`
-10. `09-qa-and-definition-of-done.md`
-11. `11-hardening-and-ops.md`
-12. `12-visual-roadmap.md`
-13. `13-visual-direction-lock-v1.md`
-14. `14-v2-hud-layout-pass.md`
-15. `15-v3-prologue-environment-pass.md`
-16. `16-v4-character-silhouette-pass.md`
-17. `17-v5-prologue-animation-acting-pass.md`
-18. `18-v6-hub-visual-pass.md`
-19. `19-v7-first-run-environment-pass.md`
-20. `20-v8-biome-identity-pass.md`
-21. `21-v9-fx-and-lighting-pass.md`
-22. `22-v10-typography-and-ui-material-pass.md`
-23. `23-v11-mobile-visual-fit-pass.md`
-24. `24-v12-final-art-review-and-consolidation.md`
-25. `25-post-v12-execution-roadmap.md`
-26. `26-p13-onboarding-and-first-20-minutes.md`
-27. `27-p14-run-readability-and-feedback.md`
-28. `28-responsive-landscape-shell-pass.md`
-29. `29-shell-ux-polish-and-publish.md`
-30. `30-mobile-portrait-shell-redesign.md`
+1. `00-current-status.md`
+2. `01-game-vision.md`
+3. `02-narrative-and-world.md`
+4. `10-art-and-audio-bible.md`
+5. `03-core-loop-and-systems.md`
+6. `04-meta-progression-and-content.md`
+7. `05-web-ux-and-input.md`
+8. `06-technical-architecture.md`
+9. `07-production-roadmap.md`
+10. `08-sprint-plan.md`
+11. `09-qa-and-definition-of-done.md`
+12. `11-hardening-and-ops.md`
+13. `12-visual-roadmap.md`
+14. `13-visual-direction-lock-v1.md`
+15. `14-v2-hud-layout-pass.md`
+16. `15-v3-prologue-environment-pass.md`
+17. `16-v4-character-silhouette-pass.md`
+18. `17-v5-prologue-animation-acting-pass.md`
+19. `18-v6-hub-visual-pass.md`
+20. `19-v7-first-run-environment-pass.md`
+21. `20-v8-biome-identity-pass.md`
+22. `21-v9-fx-and-lighting-pass.md`
+23. `22-v10-typography-and-ui-material-pass.md`
+24. `23-v11-mobile-visual-fit-pass.md`
+25. `24-v12-final-art-review-and-consolidation.md`
+26. `25-post-v12-execution-roadmap.md`
+27. `26-p13-onboarding-and-first-20-minutes.md`
+28. `27-p14-run-readability-and-feedback.md`
+29. `28-responsive-landscape-shell-pass.md`
+30. `29-shell-ux-polish-and-publish.md`
+31. `30-mobile-portrait-shell-redesign.md`
 
 Daily commands:
 

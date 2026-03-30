@@ -153,7 +153,7 @@ h3,
 .hud-bottom__content {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: flex-start;
   gap: 10px;
 }
 
@@ -1246,5 +1246,345 @@ body.reduced-motion .hud-prompt-panel {
 
   .hud-panel {
     width: min(520px, 34vw);
+  }
+}
+
+/* v13 clarity overhaul */
+.landscape-frame {
+  gap: 12px;
+  padding: 10px;
+}
+
+.playfield-shell {
+  flex: 1 1 62%;
+  min-height: 280px;
+}
+
+.hud-top {
+  align-items: center;
+}
+
+.hud-chip {
+  padding: 8px 13px;
+  font-size: 10px;
+  line-height: 1.32;
+  letter-spacing: 0.12em;
+}
+
+.hud-event {
+  width: min(410px, 100%);
+  padding: 10px 14px;
+  border-radius: 22px;
+}
+
+.hud-bottom {
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+}
+
+.hud-bottom__content {
+  max-width: 520px;
+  gap: 10px;
+}
+
+.hud-panel {
+  width: min(480px, 100%);
+  padding: 16px 18px;
+  border-radius: 24px;
+}
+
+.hud-title {
+  font-size: 46px;
+  line-height: 0.94;
+}
+
+.hud-subtitle {
+  font-size: 15px;
+}
+
+.hud-panel__lead {
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 1.44;
+}
+
+.hud-grid {
+  margin-top: 12px;
+  gap: 8px;
+}
+
+.hud-stat {
+  border-radius: 14px;
+  padding: 10px 12px;
+}
+
+.hud-stat__label {
+  margin-bottom: 3px;
+  font-size: 10px;
+}
+
+.hud-stat__value {
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.hud-prompt-panel {
+  width: min(520px, 100%);
+  padding: 10px 14px 12px;
+}
+
+.hud-prompt-panel__title {
+  font-size: clamp(18px, 2.1vw, 24px);
+  line-height: 1;
+}
+
+.hud-prompt-panel__body {
+  font-size: 11px;
+}
+
+.hud-prompt-tag {
+  min-height: 22px;
+  padding: 4px 8px;
+  font-size: 9px;
+}
+
+.hud-footer {
+  justify-content: flex-end;
+}
+
+.hud-actions {
+  width: min(620px, 100%);
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 7px;
+  padding: 8px;
+  border-radius: 16px;
+}
+
+.hud-button {
+  width: 100%;
+  min-height: 38px;
+  padding: 7px 10px;
+  font-size: 10px;
+  letter-spacing: 0.09em;
+}
+
+.app-shell[data-scene='hub'] .hud-actions {
+  width: min(620px, 100%);
+  justify-content: unset;
+}
+
+.app-shell[data-scene='hub'] .hud-panel {
+  max-height: none;
+  overflow: visible;
+}
+
+.app-shell[data-overlay='on'] .hud-topbar,
+.app-shell[data-overlay='on'] .hud-bottom {
+  opacity: 0.14;
+  pointer-events: none;
+}
+
+.app-shell[data-overlay='on'] .summary-panel:not([hidden]) {
+  opacity: 1;
+}
+
+@media (max-width: 900px) {
+  .landscape-frame {
+    width: calc(100vw - 12px);
+    height: calc(100svh - 12px);
+    padding: 6px;
+    gap: 8px;
+  }
+
+  .playfield-shell {
+    flex: 0 0 auto;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    min-height: 160px;
+    max-height: min(52svh, calc((100vw - 24px) * 9 / 16));
+    border-radius: 16px;
+  }
+
+  .hud-top {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .hud-chip {
+    padding: 7px 10px;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+  }
+
+  .hud-chip--resource {
+    grid-column: 1 / -1;
+  }
+
+  .hud-event {
+    width: 100%;
+    padding: 8px 10px;
+  }
+
+  .hud-event__body {
+    display: none;
+  }
+
+  .hud-bottom {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .hud-bottom__content {
+    max-width: none;
+    gap: 8px;
+  }
+
+  .hud-panel {
+    width: 100%;
+    padding: 12px;
+    border-radius: 16px;
+  }
+
+  .hud-title {
+    font-size: 34px;
+  }
+
+  .hud-subtitle {
+    font-size: 13px;
+  }
+
+  .hud-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .hud-prompt-panel {
+    width: 100%;
+    border-radius: 16px;
+    padding: 8px 10px;
+  }
+
+  .hud-prompt-panel__eyebrow {
+    font-size: 9px;
+  }
+
+  .hud-prompt-panel__title {
+    font-size: 16px;
+    line-height: 1.06;
+  }
+
+  .hud-prompt-panel__body {
+    margin-top: 5px;
+    font-size: 10px;
+    line-height: 1.35;
+  }
+
+  .hud-prompt-tags {
+    margin-top: 6px;
+    gap: 4px;
+  }
+
+  .hud-actions {
+    width: 100%;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
+    padding: 6px;
+    border-radius: 14px;
+  }
+
+  .hud-button {
+    min-height: 34px;
+    padding: 6px 8px;
+    font-size: 9px;
+    letter-spacing: 0.07em;
+  }
+
+  .touch-overlay {
+    gap: 6px;
+  }
+
+  .touch-overlay__left,
+  .touch-overlay__right {
+    width: 100%;
+    gap: 6px;
+    padding: 6px;
+    border-radius: 12px;
+  }
+
+  .touch-button {
+    min-height: 38px;
+    padding: 6px 8px;
+    font-size: 8px;
+  }
+}
+
+@media (orientation: portrait) and (max-width: 700px) {
+  .landscape-frame {
+    width: calc(100vw - 10px);
+    height: calc(100svh - 10px);
+    gap: 6px;
+    padding: 5px;
+  }
+
+  .hud-bottom {
+    flex: 0 0 auto;
+  }
+
+  .hud-top {
+    grid-template-columns: 1fr;
+  }
+
+  .hud-chip--resource {
+    display: none;
+  }
+
+  .playfield-shell {
+    max-height: min(50svh, calc((100vw - 20px) * 9 / 16));
+    border-radius: 14px;
+  }
+
+  .hud-bottom__content {
+    gap: 6px;
+  }
+
+  .app-shell[data-scene='hub'] .hud-panel {
+    max-height: min(22svh, 186px);
+    overflow: auto;
+  }
+
+  .app-shell[data-scene='run'] .hud-panel,
+  .app-shell[data-scene='prologue'] .hud-panel {
+    display: none;
+  }
+
+  .hud-prompt-panel__eyebrow,
+  .hud-prompt-panel__body,
+  .hud-prompt-tags {
+    display: none;
+  }
+
+  .hud-prompt-panel__title {
+    margin-top: 0;
+    font-size: 15px;
+  }
+
+  .hud-actions {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .summary-panel {
+    padding: 8px;
+  }
+
+  .summary-panel__frame {
+    width: calc(100vw - 16px);
+    max-height: min(82svh, 640px);
+    border-radius: 16px;
+    padding: 14px 12px;
+  }
+
+  .summary-panel__title {
+    font-size: 23px;
   }
 }

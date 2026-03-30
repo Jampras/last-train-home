@@ -42,6 +42,7 @@ Build atual:
 
 ## Documentacao
 
+- [docs/00-current-status.md](C:\Users\Jotape\Documents\gameweb\docs\00-current-status.md)
 - [docs/README.md](C:\Users\Jotape\Documents\gameweb\docs\README.md)
 - [docs/09-qa-and-definition-of-done.md](C:\Users\Jotape\Documents\gameweb\docs\09-qa-and-definition-of-done.md)
 - [docs/11-hardening-and-ops.md](C:\Users\Jotape\Documents\gameweb\docs\11-hardening-and-ops.md)

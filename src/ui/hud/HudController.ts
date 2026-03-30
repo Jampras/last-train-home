@@ -16,7 +16,6 @@ export class HudController {
   render(state: GameState): void {
     const leader = getLeaderById(state.selectedLeaderId)
     const mastery = state.leaderMastery[leader.id]
-    const resourceSource = state.run?.resources
     const currentRoute = state.routeNodes.find((route) => route.id === state.activeRouteId)
     const selectedWagon = state.wagonBlueprints.find((wagon) => wagon.leaderId === state.selectedLeaderId) ?? null
     const wagonBuilt = selectedWagon ? state.builtWagonIds.includes(selectedWagon.id) : false
@@ -26,11 +25,10 @@ export class HudController {
       state.helpPanelOpen ||
       state.currentMemory !== null ||
       state.lastRunSummary !== null
+    const compactLayout = this.isCompactLayout()
     const isHub = state.currentScene === 'hub'
     const isPrologue = state.currentScene === 'prologue'
-    const controlsHint = state.userSettings.touchControlsEnabled
-      ? 'Deslize para mover | use os botoes para agir'
-      : 'A/D move | Espaco interage | Q papel | Shift habilidade'
+    const controlsHint = this.getControlsHint(state, compactLayout)
     const dayLabel =
       isPrologue ? 'Prologo' : state.run ? `Dia ${state.run.clock.day}` : 'Hub'
     const clockLabel =
@@ -49,12 +47,10 @@ export class HudController {
 
     this.shell.appShell.dataset.scene = state.currentScene
     this.shell.appShell.dataset.touch = state.userSettings.touchControlsEnabled ? 'on' : 'off'
+    this.shell.appShell.dataset.compact = compactLayout ? 'on' : 'off'
+    this.shell.appShell.dataset.overlay = blockingOverlay ? 'on' : 'off'
     this.shell.clockChip.textContent = clockLabel
-    this.shell.resourceChip.textContent = isPrologue
-      ? 'Siga o pai | acenda a luz | volte ao trem'
-      : resourceSource
-        ? `Suc ${resourceSource.scrap} | Tec ${resourceSource.cloth} | Oleo ${resourceSource.lampOil} | Com ${resourceSource.food} | Carv ${resourceSource.coal}`
-        : `Mem ${state.progress.memoryTokens} | Frag ${state.progress.blueprintFragments} | Rotas ${state.progress.routeMarks}`
+    this.shell.resourceChip.textContent = this.getResourceLabel(state, compactLayout)
     this.shell.statusChip.textContent = statusLabel
     this.shell.clockChip.dataset.tone = isHub ? 'hub' : isPrologue ? 'guide' : runTone
     this.shell.resourceChip.dataset.tone = isHub ? 'hub' : state.run?.canDepart ? 'ready' : runTone === 'danger' ? 'danger-soft' : 'guide'
@@ -62,40 +58,16 @@ export class HudController {
 
     this.shell.infoPanel.hidden = !isHub
     this.shell.infoPanel.innerHTML = isHub
-      ? `
-              <div class="hud-panel__eyebrow">Comando atual</div>
-              <h1 class="hud-title">${leader.name}</h1>
-              <p class="hud-subtitle">${leader.signature}</p>
-              <p class="hud-panel__lead">Proxima saida: ${currentRoute?.name ?? 'Sem rota'} | ${this.getProjectStatus(selectedWagon, wagonBuilt, wagonUpgraded, mastery.unlocked)}</p>
-              <div class="hud-grid">
-                <div class="hud-stat">
-                  <span class="hud-stat__label">Maestria</span>
-                  <span class="hud-stat__value">${mastery.unlocked ? 'Liberada' : `${mastery.points}/${mastery.requiredPoints}`}</span>
-                </div>
-                <div class="hud-stat">
-                  <span class="hud-stat__label">Projeto</span>
-                  <span class="hud-stat__value">${wagonUpgraded ? 'Evoluido' : wagonBuilt ? 'Montado' : 'Pronto'}</span>
-                </div>
-                <div class="hud-stat">
-                  <span class="hud-stat__label">Rota</span>
-                  <span class="hud-stat__value">${currentRoute?.name ?? 'Sem rota'} | ${currentRoute?.danger ?? '-'}</span>
-                </div>
-                <div class="hud-stat">
-                  <span class="hud-stat__label">Banco</span>
-                  <span class="hud-stat__value">${state.progress.memoryTokens} mem | ${state.progress.blueprintFragments} frag | ${state.progress.routeMarks} rotas</span>
-                </div>
-                <div class="hud-stat">
-                  <span class="hud-stat__label">Pistas</span>
-                  <span class="hud-stat__value">${state.clues.length}/4${state.endingUnlocked ? ' | final pronto' : ''}</span>
-                </div>
-                <div class="hud-stat">
-                  <span class="hud-stat__label">Ultima nota</span>
-                  <span class="hud-stat__value">${this.getLastOutcomeSummary(state.lastOutcome)}</span>
-                </div>
-              </div>
-              <div class="hud-panel__divider"></div>
-              <p class="hud-prompt">Troque de lider, ajuste a rota e parta. O trem cresce a cada volta.</p>
-            `
+      ? this.renderHubPanel(
+          state,
+          leader.name,
+          leader.signature,
+          mastery.unlocked ? 'Liberada' : `${mastery.points}/${mastery.requiredPoints}`,
+          wagonUpgraded ? 'Evoluido' : wagonBuilt ? 'Montado' : 'Pronto',
+          `${currentRoute?.name ?? 'Sem rota'} | ${currentRoute?.danger ?? '-'}`,
+          `${state.progress.memoryTokens} mem | ${state.progress.blueprintFragments} frag | ${state.progress.routeMarks} rotas`,
+          compactLayout,
+        )
       : ''
 
     this.shell.promptPanel.hidden = isHub || blockingOverlay
@@ -106,9 +78,14 @@ export class HudController {
       : `${state.run?.stationName ?? 'Estacao'} | ${leader.name}`
     this.shell.promptTitle.textContent = this.getPromptTitle(state)
     this.shell.promptBody.textContent = isPrologue
-      ? `${controlsHint} | ${this.getPrologueSupport(state)}`
-      : `${this.getRunStatusLine(state)} | ${controlsHint}`
-    this.shell.promptTags.innerHTML = this.getPromptTags(state)
+      ? compactLayout
+        ? this.getPrologueSupport(state)
+        : `${controlsHint} | ${this.getPrologueSupport(state)}`
+      : compactLayout
+        ? this.getRunStatusLine(state)
+        : `${this.getRunStatusLine(state)} | ${controlsHint}`
+    const promptTags = this.getPromptTags(state, compactLayout)
+    this.shell.promptTags.innerHTML = promptTags
       .map((tag) => `<span class="hud-prompt-tag">${tag}</span>`)
       .join('')
 
@@ -118,7 +95,7 @@ export class HudController {
       this.shell.eventBanner.hidden = false
       this.shell.eventBanner.dataset.tone = event.tone
       this.shell.eventTitle.textContent = `${event.title} | ${event.at}`
-      this.shell.eventBody.textContent = event.body
+      this.shell.eventBody.textContent = compactLayout ? this.getLastOutcomeSummary(event.body) : event.body
     } else {
       this.shell.eventBanner.hidden = true
     }
@@ -140,19 +117,7 @@ export class HudController {
       this.shell.summaryTitle.textContent = state.lastRunSummary.success
         ? 'Resumo da ultima run'
         : 'Retirada registrada'
-      this.shell.summaryBody.innerHTML = `
-        <p>${state.lastRunSummary.headline}</p>
-        <p>Lider: ${state.lastRunSummary.leaderName} | Estacao: ${state.lastRunSummary.stationName} | Modo: ${state.lastRunSummary.difficulty === 'aconchegante' ? 'Aconchegante' : 'Jornada'}</p>
-        <p>Noites: ${state.lastRunSummary.nightsSurvived} | Marcas: ${state.lastRunSummary.builtTiers} | Integridade final: ${state.lastRunSummary.trainIntegrityLeft} | Recrutas salvos: ${state.lastRunSummary.recruitsSaved}</p>
-        <p>Ganhos da run: ${state.lastRunSummary.rewards.memoryTokens} memorias, ${state.lastRunSummary.rewards.blueprintFragments} fragmentos, ${state.lastRunSummary.rewards.routeMarks} marcas de rota.</p>
-        <p>Banco do trem agora: ${state.lastRunSummary.progressTotals.memoryTokens} memorias, ${state.lastRunSummary.progressTotals.blueprintFragments} fragmentos, ${state.lastRunSummary.progressTotals.routeMarks} marcas.</p>
-        <p>Recursos trazidos: sucata ${state.lastRunSummary.resourcesReturned.scrap}, tecido ${state.lastRunSummary.resourcesReturned.cloth}, oleo ${state.lastRunSummary.resourcesReturned.lampOil}, comida ${state.lastRunSummary.resourcesReturned.food}, carvao ${state.lastRunSummary.resourcesReturned.coal}.</p>
-        <p>${state.lastRunSummary.merchantSurvived ? 'O mercador sobreviveu a noite e reforcou a partida.' : 'Nenhum acerto especial do mercador foi registrado nesta run.'}</p>
-        <p>${state.lastRunSummary.clueUnlockedTitle ? `Nova pista destravada: ${state.lastRunSummary.clueUnlockedTitle}.` : 'Nenhuma pista nova nesta volta, mas o progresso foi mantido.'}</p>
-        <p>${state.lastRunSummary.nextRouteName ? `Proxima parada recomendada: ${state.lastRunSummary.nextRouteName}.` : 'Nenhuma rota nova aberta nesta volta.'}</p>
-        <p>Maestria: +${state.lastRunSummary.masteryPointsEarned} ponto(s)${state.lastRunSummary.masteryChallengeCompleted ? ' com bonus de desafio' : ''}.</p>
-        <p>${state.lastRunSummary.masteryUnlocked ? `Nova evolucao liberada: ${state.lastRunSummary.masteryReward}` : `Proximo marco: ${state.lastRunSummary.masteryReward}`}</p>
-      `
+      this.shell.summaryBody.innerHTML = this.renderRunSummary(state, compactLayout)
       this.shell.dismissSummaryButton.textContent = 'Fechar resumo'
     } else {
       this.shell.summaryPanel.hidden = true
@@ -170,7 +135,7 @@ export class HudController {
     this.shell.actionButton.hidden = isPrologue
     this.shell.settingsPanel.hidden = !state.settingsPanelOpen
     this.shell.helpPanel.hidden = !state.helpPanelOpen
-    this.shell.touchOverlay.hidden = !state.userSettings.touchControlsEnabled
+    this.shell.touchOverlay.hidden = !state.userSettings.touchControlsEnabled || blockingOverlay
     this.shell.previousButton.disabled = blockingOverlay
     this.shell.nextButton.disabled = blockingOverlay
     this.shell.settingsButton.disabled = state.settingsPanelOpen
@@ -210,6 +175,119 @@ export class HudController {
     this.shell.skillButton.dataset.tone = runTone === 'danger' ? 'danger-soft' : 'guide'
     this.shell.crewButton.dataset.tone = state.run?.recruitedCats.length ? 'guide' : 'muted'
     this.shell.buildButton.dataset.tone = isHub ? 'guide' : runTone === 'danger' ? 'danger-soft' : 'guide'
+  }
+
+  private renderHubPanel(
+    state: GameState,
+    leaderName: string,
+    leaderSignature: string,
+    masteryLabel: string,
+    projectLabel: string,
+    routeLabel: string,
+    bankLabel: string,
+    compactLayout: boolean,
+  ): string {
+    const clueLabel = `${state.clues.length}/4${state.endingUnlocked ? ' | final pronto' : ''}`
+    const outcomeLabel = this.getLastOutcomeSummary(state.lastOutcome)
+    const lead = compactLayout
+      ? `Proxima saida: ${routeLabel}`
+      : `Proxima saida: ${routeLabel} | ${outcomeLabel}`
+
+    return `
+      <div class="hud-panel__eyebrow">Comando atual</div>
+      <h1 class="hud-title">${leaderName}</h1>
+      <p class="hud-subtitle">${leaderSignature}</p>
+      <p class="hud-panel__lead">${lead}</p>
+      <div class="hud-grid">
+        <div class="hud-stat">
+          <span class="hud-stat__label">Maestria</span>
+          <span class="hud-stat__value">${masteryLabel}</span>
+        </div>
+        <div class="hud-stat">
+          <span class="hud-stat__label">Projeto</span>
+          <span class="hud-stat__value">${projectLabel}</span>
+        </div>
+        <div class="hud-stat">
+          <span class="hud-stat__label">Banco</span>
+          <span class="hud-stat__value">${bankLabel}</span>
+        </div>
+        <div class="hud-stat">
+          <span class="hud-stat__label">Pistas</span>
+          <span class="hud-stat__value">${clueLabel}</span>
+        </div>
+      </div>
+    `
+  }
+
+  private renderRunSummary(state: GameState, compactLayout: boolean): string {
+    const summary = state.lastRunSummary
+
+    if (!summary) {
+      return ''
+    }
+
+    const modeLabel = summary.difficulty === 'aconchegante' ? 'Aconchegante' : 'Jornada'
+    const progressionLine = summary.clueUnlockedTitle
+      ? `Nova pista: ${summary.clueUnlockedTitle}.`
+      : summary.nextRouteName
+        ? `Proxima rota: ${summary.nextRouteName}.`
+        : 'Sem pista nova nesta volta.'
+    const masteryLine = summary.masteryUnlocked
+      ? `Maestria liberada: ${summary.masteryReward}.`
+      : `Maestria +${summary.masteryPointsEarned}: ${summary.masteryReward}.`
+
+    if (compactLayout) {
+      return `
+        <p>${summary.headline}</p>
+        <p>${summary.leaderName} | ${summary.stationName} | ${modeLabel}</p>
+        <p>Noites ${summary.nightsSurvived} | Integridade ${summary.trainIntegrityLeft} | Recrutas ${summary.recruitsSaved}</p>
+        <p>Ganhos: ${summary.rewards.memoryTokens} mem, ${summary.rewards.blueprintFragments} frag, ${summary.rewards.routeMarks} rotas.</p>
+        <p>${masteryLine}</p>
+      `
+    }
+
+    return `
+      <p>${summary.headline}</p>
+      <p>Lider: ${summary.leaderName} | Estacao: ${summary.stationName} | Modo: ${modeLabel}</p>
+      <p>Noites: ${summary.nightsSurvived} | Marcas: ${summary.builtTiers} | Integridade final: ${summary.trainIntegrityLeft} | Recrutas salvos: ${summary.recruitsSaved}</p>
+      <p>Ganhos da run: ${summary.rewards.memoryTokens} memorias, ${summary.rewards.blueprintFragments} fragmentos e ${summary.rewards.routeMarks} marcas de rota.</p>
+      <p>Banco atual: ${summary.progressTotals.memoryTokens} memorias, ${summary.progressTotals.blueprintFragments} fragmentos, ${summary.progressTotals.routeMarks} marcas.</p>
+      <p>Recursos trazidos: sucata ${summary.resourcesReturned.scrap}, tecido ${summary.resourcesReturned.cloth}, oleo ${summary.resourcesReturned.lampOil}, comida ${summary.resourcesReturned.food}, carvao ${summary.resourcesReturned.coal}.</p>
+      <p>${progressionLine}</p>
+      <p>${masteryLine}</p>
+    `
+  }
+
+  private getResourceLabel(state: GameState, compactLayout: boolean): string {
+    if (state.currentScene === 'prologue') {
+      return compactLayout ? 'Siga o pai | acenda a luz' : 'Siga o pai | acenda a luz | volte ao trem'
+    }
+
+    if (state.run?.resources) {
+      const resources = state.run.resources
+
+      if (compactLayout) {
+        return `Suc ${resources.scrap} | Tec ${resources.cloth} | Oleo ${resources.lampOil}`
+      }
+
+      return `Suc ${resources.scrap} | Tec ${resources.cloth} | Oleo ${resources.lampOil} | Com ${resources.food} | Carv ${resources.coal}`
+    }
+
+    return compactLayout
+      ? `Mem ${state.progress.memoryTokens} | Frag ${state.progress.blueprintFragments} | Rot ${state.progress.routeMarks}`
+      : `Mem ${state.progress.memoryTokens} | Frag ${state.progress.blueprintFragments} | Rotas ${state.progress.routeMarks}`
+  }
+
+  private getControlsHint(state: GameState, compactLayout: boolean): string {
+    if (state.userSettings.touchControlsEnabled) {
+      return compactLayout ? 'Deslize e use Agir' : 'Deslize para mover | use os botoes para agir'
+    }
+
+    return compactLayout ? 'A/D move | Espaco age' : 'A/D move | Espaco interage | Q papel | Shift habilidade'
+  }
+
+  private isCompactLayout(): boolean {
+    return window.matchMedia('(max-width: 900px)').matches || window.matchMedia('(max-height: 700px)').matches
   }
 
   private getPromptTitle(state: GameState): string {
@@ -291,68 +369,74 @@ export class HudController {
     return 'Aprenda o ritmo antes do desastre'
   }
 
-  private getPromptTags(state: GameState): string[] {
+  private getPromptTags(state: GameState, compactLayout: boolean): string[] {
+    const limitTags = (tags: string[]) => (compactLayout ? tags.slice(0, 2) : tags)
+
     if (state.currentScene === 'prologue') {
       if (state.contextPrompt.includes('lampiao')) {
-        return ['Chegue perto', 'Espaco acende', 'Fique na luz']
+        return limitTags(['Chegue perto', 'Espaco acende', 'Fique na luz'])
       }
 
       if (state.contextPrompt.includes('gatinha')) {
-        return ['Chegue perto', 'Espaco ajuda', 'Volte ao trem']
+        return limitTags(['Chegue perto', 'Espaco ajuda', 'Volte ao trem'])
       }
 
       if (state.contextPrompt.includes('barricada')) {
-        return ['Chegue perto', 'Espaco reforca', 'Segure a entrada']
+        return limitTags(['Chegue perto', 'Espaco reforca', 'Segure a entrada'])
       }
 
       if (state.contextPrompt.includes('compartimento')) {
-        return ['Corra', 'Entre no trem', 'Nao fique fora']
+        return limitTags(['Corra', 'Entre no trem', 'Nao fique fora'])
       }
 
-      return state.userSettings.touchControlsEnabled
+      return limitTags(
+        state.userSettings.touchControlsEnabled
         ? ['Deslize', 'Toque para agir', 'Siga seu pai']
         : ['A/D move', 'Espaco age', 'Siga seu pai']
+      )
     }
 
     if (!state.run) {
-      return ['Escolha um lider', 'Monte um vagao', 'Parta']
+      return limitTags(['Escolha um lider', 'Monte um vagao', 'Parta'])
     }
 
     if (state.run.enemies.length > 0) {
-      return ['Segure a linha', 'Use habilidade', 'Proteja o trem']
+      return limitTags(['Segure a linha', 'Use habilidade', 'Proteja o trem'])
     }
 
     if (state.run.canDepart && Math.abs(state.run.playerX - state.run.trainX) <= 140) {
-      return ['Chegue ao trem', 'Espaco parte', 'Feche a run']
+      return limitTags(['Chegue ao trem', 'Espaco parte', 'Feche a run'])
     }
 
     if (state.run.canDepart) {
-      return ['Volte ao trem', 'Partida pronta', 'Feche a run']
+      return limitTags(['Volte ao trem', 'Partida pronta', 'Feche a run'])
     }
 
     if (state.run.merchant?.active) {
-      return ['Proteja a banca', 'Aguente a noite', 'Ganhe bonus']
+      return limitTags(['Proteja a banca', 'Aguente a noite', 'Ganhe bonus'])
     }
 
     if (state.contextPrompt.includes('coletar')) {
-      return ['Chegue perto', 'Espaco coleta', 'Ganhe recursos']
+      return limitTags(['Chegue perto', 'Espaco coleta', 'Ganhe recursos'])
     }
 
     if (state.contextPrompt.includes('resgatar')) {
-      return ['Chegue perto', 'Espaco resgata', 'Leve ao trem']
+      return limitTags(['Chegue perto', 'Espaco resgata', 'Leve ao trem'])
     }
 
     if (state.contextPrompt.includes('trocar o papel')) {
-      return ['Fique no trem', 'Q troca papel', 'Teste funcoes']
+      return limitTags(['Fique no trem', 'Q troca papel', 'Teste funcoes'])
     }
 
     if (state.contextPrompt.includes('gastar')) {
-      return ['Chegue perto', 'Espaco constroi', 'Use sucata']
+      return limitTags(['Chegue perto', 'Espaco constroi', 'Use sucata'])
     }
 
-    return state.userSettings.touchControlsEnabled
+    return limitTags(
+      state.userSettings.touchControlsEnabled
       ? ['Deslize', 'Explore lados', 'Volte ao trem']
       : ['A/D explora', 'Shift habilidade', 'Volte ao trem']
+    )
   }
 
   private getRunStatusLine(state: GameState): string {
@@ -496,29 +580,6 @@ export class HudController {
     const nextWindow = windows.find((window) => window.minute > minuteOfDay) ?? windows[0]
 
     return `Proxima janela ${nextWindow.label}`
-  }
-
-  private getProjectStatus(
-    selectedWagon: GameState['wagonBlueprints'][number] | null,
-    wagonBuilt: boolean,
-    wagonUpgraded: boolean,
-    masteryUnlocked: boolean,
-  ): string {
-    if (!selectedWagon) {
-      return 'Sem projeto'
-    }
-
-    if (!wagonBuilt) {
-      return `${selectedWagon.name} pronto para montar`
-    }
-
-    if (wagonUpgraded) {
-      return `${selectedWagon.upgradeName} ativo`
-    }
-
-    return masteryUnlocked
-      ? `${selectedWagon.name} montado | evolucao liberada`
-      : `${selectedWagon.name} montado | falta maestria`
   }
 
   private getBuildButtonLabel(

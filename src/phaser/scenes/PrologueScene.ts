@@ -336,9 +336,26 @@ export class PrologueScene extends Phaser.Scene {
   }
 
   private layout(): void {
-    this.caption.setPosition(this.scale.width * 0.5, this.scale.height - 76)
-    this.objectiveText.setPosition(this.scale.width * 0.5, this.scale.height - 48)
-    this.timeskipText.setPosition(this.scale.width * 0.5, this.scale.height * 0.46)
+    const { width, height } = this.scale
+    const compact = width <= 760 || height <= 460
+    const captionSize = compact ? 16 : width <= 1100 ? 20 : 24
+    const subtitleSize = compact ? 11 : 12
+    const timeskipSize = Math.round(Phaser.Math.Clamp(width * 0.058, 34, 56))
+    const wrapWidth = Math.max(260, width - (compact ? 64 : 140))
+
+    this.caption.setFontSize(captionSize)
+    this.caption.setWordWrapWidth(wrapWidth, true)
+    this.caption.setLineSpacing(compact ? 2 : 4)
+    this.caption.setStroke('#0d1922', compact ? 4 : 6)
+    this.caption.setPosition(width * 0.5, height - (compact ? 50 : 76))
+
+    this.objectiveText.setFontSize(subtitleSize)
+    this.objectiveText.setWordWrapWidth(wrapWidth, true)
+    this.objectiveText.setPosition(width * 0.5, height - (compact ? 26 : 48))
+
+    this.timeskipText.setFontSize(timeskipSize)
+    this.timeskipText.setStroke('#0d1922', compact ? 6 : 8)
+    this.timeskipText.setPosition(width * 0.5, height * 0.46)
   }
 
   private handleShutdown(): void {

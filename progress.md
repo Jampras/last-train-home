@@ -1,3 +1,9 @@
+STATUS CONSOLIDADO (FONTE OFICIAL):
+
+- veja `docs/00-current-status.md`
+- etapa atual: `post-P14`, pronto para `P15`
+- este arquivo (`progress.md`) e historico cronologico das execucoes
+
 Original prompt: Criar um jogo web inspirado em Kingdom Two Crowns e Risk of Rain, com protagonistas gatos, progressao forte entre runs, prologo jogavel, suporte a teclado e touch com swipe, e deploy na Vercel.
 
 2026-03-29
